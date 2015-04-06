@@ -1,0 +1,139 @@
+{
+  "resources": [
+    "output.ogg",
+    "output.m4a",
+    "output.mp3"
+  ],
+  "spritemap": {
+    "a1": {
+      "start": 302,
+      "end": 304.54403628117916,
+      "loop": false
+    },
+    "a2": {
+      "start": 306,
+      "end": 308.5150113378685,
+      "loop": false
+    },
+    "as1": {
+      "start": 310,
+      "end": 312.5411337868481,
+      "loop": false
+    },
+    "as2": {
+      "start": 314,
+      "end": 316.54403628117916,
+      "loop": false
+    },
+    "b1": {
+      "start": 318,
+      "end": 320.54403628117916,
+      "loop": false
+    },
+    "b2": {
+      "start": 322,
+      "end": 324.5411337868481,
+      "loop": false
+    },
+    "c1": {
+      "start": 326,
+      "end": 328.54403628117916,
+      "loop": false
+    },
+    "c2": {
+      "start": 330,
+      "end": 332.54403628117916,
+      "loop": false
+    },
+    "c3": {
+      "start": 334,
+      "end": 336.6311111111111,
+      "loop": false
+    },
+    "cs1": {
+      "start": 338,
+      "end": 340.5469387755102,
+      "loop": false
+    },
+    "cs2": {
+      "start": 342,
+      "end": 344.54403628117916,
+      "loop": false
+    },
+    "d1": {
+      "start": 346,
+      "end": 348.5411337868481,
+      "loop": false
+    },
+    "d2": {
+      "start": 350,
+      "end": 352.5411337868481,
+      "loop": false
+    },
+    "ds1": {
+      "start": 354,
+      "end": 356.5411337868481,
+      "loop": false
+    },
+    "ds2": {
+      "start": 358,
+      "end": 360.538231292517,
+      "loop": false
+    },
+    "e1": {
+      "start": 362,
+      "end": 364.51791383219955,
+      "loop": false
+    },
+    "e2": {
+      "start": 366,
+      "end": 368.538231292517,
+      "loop": false
+    },
+    "f1": {
+      "start": 370,
+      "end": 372.54403628117916,
+      "loop": false
+    },
+    "f2": {
+      "start": 374,
+      "end": 376.54403628117916,
+      "loop": false
+    },
+    "fs1": {
+      "start": 378,
+      "end": 380.538231292517,
+      "loop": false
+    },
+    "fs2": {
+      "start": 382,
+      "end": 384.5469387755102,
+      "loop": false
+    },
+    "g1": {
+      "start": 386,
+      "end": 388.54403628117916,
+      "loop": false
+    },
+    "g2": {
+      "start": 390,
+      "end": 392.5411337868481,
+      "loop": false
+    },
+    "gs1": {
+      "start": 394,
+      "end": 396.54403628117916,
+      "loop": false
+    },
+    "gs2": {
+      "start": 398,
+      "end": 400.5469387755102,
+      "loop": false
+    },
+    "output": {
+      "start": 402,
+      "end": 602.0065306122449,
+      "loop": false
+    }
+  }
+}
