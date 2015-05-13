@@ -1,0 +1,31 @@
+{
+    "name": "Schroeder.js",
+    "version": "0.0.0",
+    "description": "Library for working with WebAudio API",
+    "main": "schroeder.js",
+    "scripts": {
+        "test": "node tests/index.js"
+    },
+    "devDependencies": {
+        "simple-test-framework": "*",
+        "concat-files": "*"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/grese/schroeder.js.git"
+    },
+    "keywords": [
+        "Web",
+        "Audio",
+        "API",
+        "HTML5",
+        "Audio",
+        "JavaScript"
+    ],
+    "author": "grese",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/grese/schroeder.js/issues"
+    },
+    "homepage": "https://github.com/grese/schroeder.js"
+}

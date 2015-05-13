@@ -267,3 +267,6 @@
 
 	Schroeder.Context = Context;
 })();
+var Schroeder;
+var Audio;
+module.exports = Schroeder;
