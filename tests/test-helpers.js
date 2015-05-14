@@ -1,19 +1,9 @@
 (function(){
-    function throttle(callback) {
-
-    return function () {
-        clearTimeout(timer);
-        var args = [].slice.call(arguments);
-        timer = setTimeout(function () {
-            callback.apply(this, args);
-        }, 100);
-    };
-    }
     if(!Schroeder.Test){
         Schroeder.Test = {
             audioContext: new AudioContext(),
             clock: null,
-            throttle: function(ms, callback){
+            throttle: function(callback, ms){
                 var timer;
                 return function(){
                     clearTimeout(timer);

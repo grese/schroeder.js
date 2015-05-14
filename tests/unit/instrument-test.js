@@ -170,7 +170,7 @@
                 durationMs = duration * 1000;
             instrument._audioData = data;
 
-            Schroeder.Test.throttle(durationMs, sourceStopSpy)();
+            Schroeder.Test.throttle(sourceStopSpy, durationMs)();
             Schroeder.Test.clock.tick(1);
             instrument.play('c0', {playbackRate: 2});
 
