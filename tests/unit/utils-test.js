@@ -2,7 +2,7 @@
 (function(){
     var expect = chai.expect;
 
-    describe('Schroeder Utils', function(){
+    describe('Schroeder.Utils', function(){
 
         it('should assign a CODECS object to Schroeder.', function(){
             expect(Schroeder.CODECS).to.be.an.instanceof(Object);
