@@ -1,0 +1,9 @@
+{
+    "framework": "mocha",
+    "src_files": [
+        "bower_components/chai/chai.js",
+        "bower_components/sinonjs/sinon.js",
+        "tmp/tmp.schroeder.js",
+        "tmp/tests.schroeder.js"
+    ]
+}

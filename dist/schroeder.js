@@ -148,14 +148,17 @@
         this.has = function(cacheKey){
             return (this.get(cacheKey) !== undefined) ? true : false;
         };
-        this.size = function(){
-            return Object.keys(_cache).length;
-        };
     };
-    Schroeder.BufferCache = BufferCache;
 
-    var AudioStore = function(options){
+    var Context = function(options){
         options = options || {};
+        this._ctx = null;
+        this._bufferCache = new BufferCache();
+        this._instruments = [];
+        this._format = options.format || 'auto';
+        this.setup();
+    };
+    Context.prototype.setup = function(){
         var ctx = null;
         try {
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -163,12 +166,9 @@
         }catch(e) {
             console.error('Web Audio API is not supported in this browser', e);
         }
-        this._bufferCache = new Schroeder.BufferCache();
-        this._instruments = [];
-        this._format = options.format || 'auto';
         this._ctx = ctx;
     };
-    AudioStore.prototype.findInstrumentById = function(instrId){
+    Context.prototype.findInstrumentById = function(instrId){
         var i;
         for(i=0; i<this._instruments.length; i++){
             if(this._instruments[i] && (this._instruments[i].id === instrId)){
@@ -176,7 +176,7 @@
             }
         }
     };
-    AudioStore.prototype.createInstrument = function(options){
+    Context.prototype.createInstrument = function(options){
         options = options || {};
         options.onLoad = options.onLoad || function(){};
         options.onError = options.onError || function(){};
@@ -190,7 +190,7 @@
             ctx: this._ctx,
             format: this._format
         };
-        if(instrOpts.id && !this.findInstrumentById(instrOpts.id)){
+        if(!this.findInstrumentById(instrOpts.id)){
             instrument = new Schroeder.Instrument(instrOpts);
             this._loadInstrument(instrument, options.onLoad, options.onError);
             this._instruments.push(instrument);
@@ -198,7 +198,7 @@
             console.error('An instrument already exists with that id.');
         }
     };
-    AudioStore.prototype._loadInstrument = function(instrument, cb, errCb){
+    Context.prototype._loadInstrument = function(instrument, cb, errCb){
         var req,
             context = this;
         if(this._bufferCache.has(instrument._url)){
@@ -216,7 +216,7 @@
             req.send();
         }
     };
-    AudioStore.prototype._decodeInstrument = function(instrument, arraybuffer, cb, errCb){
+    Context.prototype._decodeInstrument = function(instrument, arraybuffer, cb, errCb){
         var context = this;
         this._ctx.decodeAudioData(arraybuffer, function(buffer) {
             context._bufferCache.set(instrument._url, buffer);
@@ -227,7 +227,7 @@
             if(errCb instanceof Function) { errCb(); }
         });
     };
-    AudioStore.prototype.removeInstrument = function(instrId, options){
+    Context.prototype.removeInstrument = function(instrId, options){
         var i, removalIdx, fileUrl;
         for(i=0; i<this._instruments.length; i++){
             if(this._instruments[i].id === instrId){
@@ -245,14 +245,14 @@
             this._bufferCache.remove(fileUrl);
         }
     };
-    AudioStore.prototype.playSound = function(instrument, sound, options){
+    Context.prototype.playSound = function(instrument, sound, options){
         if(instrument){
             instrument.play(sound, options);
         }else{
             console.error('No instrument provided.  What do you plan to play?');
         }
     };
-    AudioStore.prototype.unlock = function(){
+    Context.prototype.unlock = function(){
         // create empty buffer
         var buffer = this._ctx.createBuffer(1, 1, 22050);
         var source = this._ctx.createBufferSource();
@@ -267,5 +267,5 @@
         }
     };
 
-    Schroeder.AudioStore = AudioStore;
+    Schroeder.Context = Context;
 })();

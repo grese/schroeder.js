@@ -1,5 +1,5 @@
 (function(){
     if(!window.Schroeder){
-        Schroeder = {};
+        window.Schroeder = {};
     }
 })();

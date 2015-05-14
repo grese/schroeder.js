@@ -1,0 +1,28 @@
+{
+    "name": "schroeder.js",
+    "version": "0.0.0",
+    "homepage": "https://github.com/grese/schroeder.js",
+    "authors": [
+        "grese <grese@yahoo-inc.com>"
+    ],
+    "description": "Schroeder JS - an library for working with the WebAudio API.",
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "tests",
+        "tmp",
+        "Gruntfile.js",
+        "karma.conf.js",
+        "package.json",
+        "build.js",
+        "artifacts"
+    ],
+    "dependencies": {},
+    "devDependencies": {
+        "mocha": "~2.2.4",
+        "chai": "~2.3.0",
+        "sinonjs": "~1.14.1"
+    }
+}

@@ -1,27 +1,27 @@
 (function(){
-	 /*
-	 -----------------------
+    /*
+     -----------------------
      Instrument
      -----------------------
      Sample Options:
      {
-     	name: 'piano',
-     	format: 'mp3', // if not specified, first supported format will be chosen
-     	urls: [
-     		'/audio/piano/output.mp3',
-     		'/audio/piano/output.m4a',
-     		'/audio/piano/output.ogg'
-     	],
-     	sprite: {
-     		c: {start: 302, end: 304.54403628117916},
-     		d: {start: 306, end: 308.5150113378685}
-     	},
-     	_ctx: AudioContext
+     name: 'piano',
+     format: 'mp3', // if not specified, first supported format will be chosen
+     urls: [
+     '/audio/piano/output.mp3',
+     '/audio/piano/output.m4a',
+     '/audio/piano/output.ogg'
+     ],
+     sprite: {
+     c: {start: 302, end: 304.54403628117916},
+     d: {start: 306, end: 308.5150113378685}
+     },
+     _ctx: AudioContext
      }
      */
     var Instrument = function(options){
-    	options = options || {};
-    	// assign options to the instrument...
+        options = options || {};
+        // assign options to the instrument...
         this.id = options.id || null;
         this.name = options.name || null;
         this.urls = options.urls || [];
@@ -54,9 +54,9 @@
         this._gainNode.gain.value = this.gain;
     };
     Instrument.prototype.setAudioData = function(decodedAudioData){
-    	this.duration = Math.ceil(this._audioNode.duration * 10) / 10;
+        this.duration = Math.ceil(this._audioNode.duration * 10) / 10;
         if(!this.sprite){
-                this.sprite = {_default: {start: 0, end: this.duration}};
+            this.sprite = {_default: {start: 0, end: this.duration}};
         }
         this._audioData = decodedAudioData;
         this._gainNode = this._ctx.createGain();
