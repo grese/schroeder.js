@@ -61,7 +61,7 @@
 
         it('#createInstrument should add a new Schroeder.Instrument with provided options, load the instrument, add it to the instruments array.', function(){
             var store = new Schroeder.AudioStore();
-            var spy = sinon.spy(store, '_loadInstrument');
+            var spy = sinon.stub(store, '_loadInstrument');
 
             store.createInstrument({ id: 'piano1' });
             expect(spy.called).to.be.ok;
