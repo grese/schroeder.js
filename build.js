@@ -16,9 +16,10 @@ var schroederFiles = [
 	'src/audio-store.js'
 ];
 var testFiles = [
-    'tests/unit/utils-test.js',
     'tests/unit/schroeder-test.js',
-    'tests/unit/audio-store-test.js'
+    'tests/unit/utils-test.js',
+    'tests/unit/audio-store-test.js',
+    'tests/unit/instrument-test.js'
 ];
 
 var tmpDir = './tmp/';
