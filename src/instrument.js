@@ -5,19 +5,20 @@
      -----------------------
      Sample Options:
      {
-     name: 'piano',
-     format: 'mp3', // if not specified, first supported format will be chosen
-     urls: [
-     '/audio/piano/output.mp3',
-     '/audio/piano/output.m4a',
-     '/audio/piano/output.ogg'
-     ],
-     sprite: {
-     c: {start: 302, end: 304.54403628117916},
-     d: {start: 306, end: 308.5150113378685}
-     },
-     _ctx: AudioContext
+         name: 'piano',
+         format: 'mp3', // if not specified, first supported format will be chosen
+         urls: [
+             '/audio/piano/output.mp3',
+             '/audio/piano/output.m4a',
+             '/audio/piano/output.ogg'
+         ],
+         sprite: {
+             c: {start: 302, end: 304.54403628117916},
+             d: {start: 306, end: 308.5150113378685}
+         },
+         _ctx: AudioContext
      }
+     -----------------------
      */
     var Instrument = function(options){
         options = options || {};
