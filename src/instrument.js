@@ -33,9 +33,20 @@
         this._audioData = null;
 
         // Create nodes...
+        this.createAudioNode();
+        this.createGainNode();
+    };
+    Instrument.prototype.createGainNode = function(){
+        if(this._ctx){
+            this._gainNode = this._ctx.createGain();
+            this.changeGain(this.gain);
+        }
+    };
+    Instrument.prototype.createAudioNode = function(){
         this._audioNode = new Audio();
-        this._audioNode.src = this._url;
-        this._gainNode = null;
+        if(this._url){
+            this._audioNode.src = this._url;
+        }
     };
     Instrument.prototype.getUrlForCodec = function(codec){
         var ext, url;
@@ -44,23 +55,22 @@
             ext = url.substring(url.lastIndexOf('.') + 1);
             if(codec === ext){
                 return url;
-            }else if(Schroeder.CODECS.isSupported(ext)){
-                return url;
             }
         }
     };
     Instrument.prototype.changeGain = function(value){
-        this.gain = value;
-        this._gainNode.gain.value = this.gain;
+        this._gainNode.gain.value = this.gain = value;
+    };
+    Instrument.prototype.updateDuration = function(){
+        this.duration = Math.ceil(this._audioNode.duration * 10) / 10;
     };
     Instrument.prototype.setAudioData = function(decodedAudioData){
-        this.duration = Math.ceil(this._audioNode.duration * 10) / 10;
+        // presuming that we just loaded new data, updating duration property.
+        this.updateDuration();
         if(!this.sprite){
             this.sprite = {_default: {start: 0, end: this.duration}};
         }
         this._audioData = decodedAudioData;
-        this._gainNode = this._ctx.createGain();
-        this.changeGain(this.gain);
     };
     Instrument.prototype.play = function(key, options){
         options = options || {};

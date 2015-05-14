@@ -16,6 +16,7 @@ var schroederFiles = [
 	'src/audio-store.js'
 ];
 var testFiles = [
+    'tests/test-helpers.js',
     'tests/unit/schroeder-test.js',
     'tests/unit/utils-test.js',
     'tests/unit/audio-store-test.js',

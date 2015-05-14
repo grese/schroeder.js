@@ -25,6 +25,12 @@
 
     var AudioStore = function(options){
         options = options || {};
+        this._createAudioContext();
+        this._bufferCache = new Schroeder.BufferCache();
+        this._instruments = [];
+        this._format = options.format || 'auto';
+    };
+    AudioStore.prototype._createAudioContext = function(){
         var ctx = null;
         try {
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -32,9 +38,6 @@
         }catch(e) {
             console.error('Web Audio API is not supported in this browser', e);
         }
-        this._bufferCache = new Schroeder.BufferCache();
-        this._instruments = [];
-        this._format = options.format || 'auto';
         this._ctx = ctx;
     };
     AudioStore.prototype.findInstrumentById = function(instrId){
