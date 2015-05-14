@@ -11,6 +11,7 @@ var doDist = (args[2] === 'dist');
 
 var schroederFiles = [
 	'src/schroeder.js',
+    'src/object.js',
 	'src/utils.js',
 	'src/instrument.js',
 	'src/audio-store.js'
@@ -18,6 +19,7 @@ var schroederFiles = [
 var testFiles = [
     'tests/test-helpers.js',
     'tests/unit/schroeder-test.js',
+    'tests/unit/object-test.js',
     'tests/unit/utils-test.js',
     'tests/unit/audio-store-test.js',
     'tests/unit/instrument-test.js'

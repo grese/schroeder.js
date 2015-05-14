@@ -21,7 +21,7 @@
         this._ctx = Schroeder.Test.audioContext;
     };
 
-    // global before, after, beforeEach and afterEach loops...
+    // global beforeEach and afterEach loops...
     beforeEach(function(){
         Schroeder.Test.clock = sinon.useFakeTimers();
     });
