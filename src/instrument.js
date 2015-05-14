@@ -75,19 +75,21 @@
     Instrument.prototype.play = function(key, options){
         options = options || {};
         key = key || '_default';
-        var buffer = this._audioData,
-            spriteItem = this.sprite[key],
-            duration = (spriteItem.end - spriteItem.start),
-            context = this._ctx,
+        var spriteItem = this.sprite[key],
             playbackRate = (options.playbackRate !== undefined) ? options.playbackRate : 1,
-            source;
+            source, duration;
 
-        if(buffer){
-            source = context.createBufferSource();
+        if(spriteItem && this._audioData){
+            duration = (spriteItem.end - spriteItem.start);
+            source = this._ctx.createBufferSource();
             source.playbackRate.value = playbackRate;
-            source.buffer = buffer;
+            try{
+                source.buffer = this._audioData;
+            }catch(e){
+                console.error('An error occurred while setting data on the buffer source node.', e);
+            }
             source.connect(this._gainNode);
-            this._gainNode.connect(context.destination);
+            this._gainNode.connect(this._ctx.destination);
             // Some older browsers use noteOn instead of start...
             if(source.start){
                 source.start(0, spriteItem.start, duration);

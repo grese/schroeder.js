@@ -4,7 +4,9 @@
 
     describe('Schroeder.Instrument', function(){
 
-        var mockOptions;
+        var mockOptions,
+            errorStub,
+            setTimeoutSpy;
         beforeEach(function(){
             mockOptions = {
                 id: 'piano1',
@@ -34,6 +36,11 @@
                 gain: 0.5,
                 ctx: Schroeder.Test.audioContext
             };
+            errorStub = sinon.stub(console, 'error');
+        });
+
+        afterEach(function(){
+            console.error.restore();
         });
 
         it('should exist, and be an object.', function(){
@@ -118,13 +125,74 @@
             var updateDurationSpy = sinon.stub(instrument, 'updateDuration');
             var duration = 130.4;
             var sprite = {_default: {start: 0, end: duration}};
-            var data = '0110101011010010110010100100010100100101010';
+            var data = '0001100110110101010010100010110010100101001';
             instrument.duration = duration;
 
             instrument.setAudioData(data);
             expect(updateDurationSpy.calledOnce).to.be.ok;
             expect(instrument.sprite).to.eql(sprite);
             expect(instrument._audioData).to.eq(data);
+        });
+
+        it('#play should just log an error if the no sound exists for the given spritekey, or if audioData is not present. ' +
+            'It should look for _default sprite item when no spritekey is provided.', function(){
+            var instrument = new Schroeder.Instrument(mockOptions);
+
+            // audioData present, but sprite key doesn't exist...
+            instrument._audioData = '0110101011010010110010100100010100100101010';
+            instrument.play();
+
+            // sprite item exists, but audioData not present...
+            instrument.sprite._default = {};
+            instrument._audioData = null;
+            instrument.play();
+
+            expect(errorStub.calledTwice).to.be.ok;
+        });
+
+        it('#play should play a particular sound by spriteKey, and apply options for nodes/filters to the sound.', function(){
+            var mockBufferSource = {
+                connect: function(){},
+                start: function(){},
+                stop: function(){},
+                playbackRate: {},
+                buffer: null
+            };
+
+            var instrument = new Schroeder.Instrument(mockOptions);
+            var gainConnectSpy = sinon.stub(instrument._gainNode, 'connect');
+            var sourceConnectSpy = sinon.spy(mockBufferSource, 'connect');
+            var sourceStartSpy = sinon.spy(mockBufferSource, 'start');
+            var sourceStopSpy = sinon.spy(mockBufferSource, 'stop');
+            var bufferSourceSpy = sinon.stub(instrument._ctx, 'createBufferSource').returns(mockBufferSource);
+            var data = '0110101011010010110010100100010100100101010';
+            var duration = mockOptions.sprite.c0.end - mockOptions.sprite.c0.start,
+                durationMs = duration * 1000;
+            instrument._audioData = data;
+
+            Schroeder.Test.throttle(durationMs, sourceStopSpy)();
+            Schroeder.Test.clock.tick(1);
+            instrument.play('c0', {playbackRate: 2});
+
+            // Creates a bufferSource on audioContext...
+            expect(bufferSourceSpy.called).to.be.ok;
+
+            // Sets playbackRate option on the sourceNode...
+            expect(mockBufferSource.playbackRate.value).to.eq(2);
+
+            // Sets audioData on sourceNode...
+            expect(mockBufferSource.buffer).to.eq(data);
+
+            // should connect sourceNode to gainNode, and gainNode to destination...
+            expect(sourceConnectSpy.calledWith(instrument._gainNode)).to.be.ok;
+            expect(gainConnectSpy.calledWith(instrument._ctx.destination)).to.be.ok;
+
+            // should start to play note with source.start...
+            expect(sourceStartSpy.calledWith(0, mockOptions.sprite.c0.start), duration).to.be.ok;
+
+            // should call source.stop after duration * 1000 ms
+            Schroeder.Test.clock.tick(durationMs);
+            expect(sourceStopSpy.called).to.be.ok;
         });
 
     });

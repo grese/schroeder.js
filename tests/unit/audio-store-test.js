@@ -4,13 +4,19 @@
 
     describe('Schroeder.AudioStore', function(){
 
-        var mockInstruments;
+        var mockInstruments,
+            errorStub;
         beforeEach(function(){
             mockInstruments = [
                 {id: 'piano1', name: 'Piano One'},
                 {id: 'piano2', name: 'Piano Two'},
                 {id: 'obo', name: 'Obo'}
             ];
+            errorStub = sinon.stub(console, 'error');
+        });
+
+        afterEach(function(){
+            console.error.restore();
         });
 
         it('should exist, and be an object', function(){
@@ -43,20 +49,17 @@
 
         it('#createInstrument should just log an error if no ID is provided', function(){
             var store = new Schroeder.AudioStore();
-            var spy = sinon.spy(console, 'error');
-
             store.createInstrument();
-            expect(spy.called).to.be.ok;
-            console.error.restore();
+            expect(errorStub.called).to.be.ok;
+
         });
 
         it('#createInstrument should just log an error if an instrument already exists with the id provided.', function(){
             var store = new Schroeder.AudioStore();
             sinon.stub(store, 'findInstrumentById').returns(true);
 
-            var spy = sinon.spy(console, 'error');
             store.createInstrument({id: 'piano1'});
-            expect(spy.called).to.be.ok;
+            expect(errorStub.called).to.be.ok;
         });
 
         it('#createInstrument should add a new Schroeder.Instrument with provided options, load the instrument, add it to the instruments array.', function(){
