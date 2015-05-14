@@ -8,7 +8,7 @@ To use the finished product in production, simply add the following script tag i
 ## Development:
 
 ### Install:
-Just a few things to do first:
+Download project, and install the dependencies...
 * `git clone https://github.com/grese/schroeder.js.git`
 * `cd schroeder.js`
 * `npm install -g bower` (skip if bower is already installed globally)
