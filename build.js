@@ -14,6 +14,7 @@ var schroederFiles = [
     'src/object.js',
 	'src/utils.js',
 	'src/instrument.js',
+    'src/buffer-cache.js',
 	'src/audio-store.js'
 ];
 var testFiles = [
@@ -21,6 +22,7 @@ var testFiles = [
     'tests/unit/schroeder-test.js',
     'tests/unit/object-test.js',
     'tests/unit/utils-test.js',
+    'tests/unit/buffer-cache-test.js',
     'tests/unit/audio-store-test.js',
     'tests/unit/instrument-test.js'
 ];
