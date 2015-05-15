@@ -46,35 +46,6 @@
             console.error('An instrument already exists with that id.');
         }
     };
-    AudioStore.prototype._loadInstrument = function(instrument, cb, errCb){
-        var req,
-            context = this;
-        if(this._bufferCache.has(instrument._url)){
-            instrument.setAudioData(this._bufferCache.get(instrument._url));
-        }else{
-            req = new XMLHttpRequest();
-            req.open('GET', instrument._url, true);
-            req.responseType = 'arraybuffer';
-            req.onload = function() {
-                context._decodeInstrument(instrument, req.response, cb, errCb);
-            };
-            req.onerror = function(){
-                if(errCb instanceof Function) { errCb(); }
-            };
-            req.send();
-        }
-    };
-    AudioStore.prototype._decodeInstrument = function(instrument, arraybuffer, cb, errCb){
-        var context = this;
-        this._ctx.decodeAudioData(arraybuffer, function(buffer) {
-            context._bufferCache.set(instrument._url, buffer);
-            instrument.setAudioData(context._bufferCache.get(instrument._url));
-            if(cb instanceof Function){ cb(); }
-        }, function(err){
-            console.error('An error occurred during decoding ' + instrument._url, err);
-            if(errCb instanceof Function) { errCb(); }
-        });
-    };
     AudioStore.prototype.removeInstrument = function(instrId, options){
         var i, removalIdx, fileUrl;
         for(i=0; i<this._instruments.length; i++){
@@ -92,6 +63,37 @@
         if(fileUrl){
             this._bufferCache.remove(fileUrl);
         }
+    };
+    AudioStore.prototype._loadInstrument = function(instrument, cb, errCb){
+        var req,
+            context = this;
+        if(this._bufferCache.has(instrument._url)){
+            instrument.setAudioData(this._bufferCache.get(instrument._url));
+            cb();
+        }else{
+            req = new XMLHttpRequest();
+            req.open('GET', instrument._url, true);
+            req.responseType = 'arraybuffer';
+            req.onload = function() {
+                context._decodeInstrument(instrument, req.response, cb, errCb);
+            };
+            req.onerror = function(e){
+                if(errCb instanceof Function) { errCb(); }
+                console.error('Error occurred while loading audio data for file ' + instrument._url, e);
+            };
+            req.send();
+        }
+    };
+    AudioStore.prototype._decodeInstrument = function(instrument, arraybuffer, cb, errCb){
+        var context = this;
+        this._ctx.decodeAudioData(arraybuffer, function(buffer) {
+            context._bufferCache.set(instrument._url, buffer);
+            instrument.setAudioData(buffer);
+            if(cb instanceof Function){ cb(); }
+        }, function(err){
+            console.error('An error occurred during decoding ' + instrument._url, err);
+            if(errCb instanceof Function) { errCb(); }
+        });
     };
     AudioStore.prototype.playSound = function(instrument, sound, options){
         if(instrument){

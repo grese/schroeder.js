@@ -6,8 +6,10 @@
 
         var mockOptions,
             errorStub,
-            setTimeoutSpy;
+            setTimeoutSpy,
+            mockAudioData;
         beforeEach(function(){
+            mockAudioData = '0110101011010010110010100100010100100101010';
             mockOptions = {
                 id: 'piano1',
                 name: 'Piano One',
@@ -125,13 +127,12 @@
             var updateDurationSpy = sinon.stub(instrument, 'updateDuration');
             var duration = 130.4;
             var sprite = {_default: {start: 0, end: duration}};
-            var data = '0001100110110101010010100010110010100101001';
             instrument.duration = duration;
 
-            instrument.setAudioData(data);
+            instrument.setAudioData(mockAudioData);
             expect(updateDurationSpy.calledOnce).to.be.ok;
             expect(instrument.sprite).to.eql(sprite);
-            expect(instrument._audioData).to.eq(data);
+            expect(instrument._audioData).to.eq(mockAudioData);
         });
 
         it('#play should just log an error if the no sound exists for the given spritekey, or if audioData is not present. ' +
@@ -139,7 +140,7 @@
             var instrument = new Schroeder.Instrument(mockOptions);
 
             // audioData present, but sprite key doesn't exist...
-            instrument._audioData = '0110101011010010110010100100010100100101010';
+            instrument._audioData = mockAudioData;
             instrument.play();
 
             // sprite item exists, but audioData not present...
@@ -164,24 +165,23 @@
             var sourceConnectSpy = sinon.spy(mockBufferSource, 'connect');
             var sourceStartSpy = sinon.spy(mockBufferSource, 'start');
             var sourceStopSpy = sinon.spy(mockBufferSource, 'stop');
-            var bufferSourceSpy = sinon.stub(instrument._ctx, 'createBufferSource').returns(mockBufferSource);
-            var data = '0110101011010010110010100100010100100101010';
+            var bufferSourceStub = sinon.stub(instrument._ctx, 'createBufferSource').returns(mockBufferSource);
             var duration = mockOptions.sprite.c0.end - mockOptions.sprite.c0.start,
                 durationMs = duration * 1000;
-            instrument._audioData = data;
+            instrument._audioData = mockAudioData;
 
-            Schroeder.Test.throttle(sourceStopSpy, durationMs)();
-            Schroeder.Test.clock.tick(1);
+            Schroeder.Test.async.throttle(sourceStopSpy, durationMs)();
+            Schroeder.Test.async.clock.tick(1);
             instrument.play('c0', {playbackRate: 2});
 
             // Creates a bufferSource on audioContext...
-            expect(bufferSourceSpy.called).to.be.ok;
+            expect(bufferSourceStub.called).to.be.ok;
 
             // Sets playbackRate option on the sourceNode...
             expect(mockBufferSource.playbackRate.value).to.eq(2);
 
             // Sets audioData on sourceNode...
-            expect(mockBufferSource.buffer).to.eq(data);
+            expect(mockBufferSource.buffer).to.eq(mockAudioData);
 
             // should connect sourceNode to gainNode, and gainNode to destination...
             expect(sourceConnectSpy.calledWith(instrument._gainNode)).to.be.ok;
@@ -191,8 +191,9 @@
             expect(sourceStartSpy.calledWith(0, mockOptions.sprite.c0.start), duration).to.be.ok;
 
             // should call source.stop after duration * 1000 ms
-            Schroeder.Test.clock.tick(durationMs);
+            Schroeder.Test.async.clock.tick(durationMs);
             expect(sourceStopSpy.called).to.be.ok;
+            bufferSourceStub.restore();
         });
 
     });
