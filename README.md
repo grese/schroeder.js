@@ -1,6 +1,8 @@
 # schroeder.js  [![Build Status](https://travis-ci.org/grese/schroeder.js.png)](https://travis-ci.org/grese/schroeder.js)
 A library built on top of the WebAudio API.
 
+![alt-text](https://raw.githubusercontent.com/grese/schroeder.js/master/schroeder-piano.png 'Schroeder')
+
 ## Production
 To use the finished product in production, simply add the following script tag in the DOM:
 `<script src='dist/schroeder.js'></script>`
