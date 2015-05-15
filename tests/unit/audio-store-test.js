@@ -48,19 +48,26 @@
             expect(store.findInstrumentById('xylophone')).to.be.undefined;
         });
 
-        it('#createInstrument should just log an error if no ID is provided', function(){
+        it('#createInstrument should just log an error and execute the error callback if no ID is provided', function(){
             var store = new Schroeder.AudioStore();
-            store.createInstrument();
+            var cbSpy = sinon.spy();
+            var errCbSpy = sinon.spy();
+            store.createInstrument({}, cbSpy, errCbSpy);
             expect(errorStub.called).to.be.ok;
-
+            expect(errCbSpy.calledOnce).to.be.ok;
+            expect(cbSpy.called).not.to.be.ok;
         });
 
-        it('#createInstrument should just log an error if an instrument already exists with the id provided.', function(){
+        it('#createInstrument should just log an error and execute the error callback if an instrument already exists with the id provided.', function(){
             var store = new Schroeder.AudioStore();
+            var cbSpy = sinon.spy();
+            var errCbSpy = sinon.spy();
             sinon.stub(store, 'findInstrumentById').returns(true);
 
-            store.createInstrument({id: 'piano1'});
+            store.createInstrument({id: 'piano1'}, cbSpy, errCbSpy);
             expect(errorStub.called).to.be.ok;
+            expect(errCbSpy.calledOnce).to.be.ok;
+            expect(cbSpy.called).not.to.be.ok;
         });
 
         it('#createInstrument should add a new Schroeder.Instrument with provided options, load the instrument, add it to the instruments array.', function(){

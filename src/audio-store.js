@@ -24,10 +24,8 @@
             }
         }
     };
-    AudioStore.prototype.createInstrument = function(options){
+    AudioStore.prototype.createInstrument = function(options, callback, errCallback){
         options = options || {};
-        options.onLoad = options.onLoad || function(){};
-        options.onError = options.onError || function(){};
 
         var instrument;
         var instrOpts = {
@@ -40,10 +38,11 @@
         };
         if(instrOpts.id && !this.findInstrumentById(instrOpts.id)){
             instrument = new Schroeder.Instrument(instrOpts);
-            this._loadInstrument(instrument, options.onLoad, options.onError);
+            this._loadInstrument(instrument, callback, errCallback);
             this._instruments.push(instrument);
         }else{
             console.error('An instrument already exists with that id.');
+            if(errCallback instanceof Function){ errCallback(); }
         }
     };
     AudioStore.prototype.removeInstrument = function(instrId, options){
