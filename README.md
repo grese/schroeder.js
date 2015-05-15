@@ -1,4 +1,6 @@
 # schroeder.js
+### Status
+[![Build Status](https://travis-ci.org/grese/schroeder.js.png)](https://travis-ci.org/grese/schroeder.js)
 A library built on top of the WebAudio API.
 
 ## Production
