@@ -5,5 +5,7 @@
         "bower_components/sinonjs/sinon.js",
         "tmp/tmp.schroeder.js",
         "tmp/tests.schroeder.js"
-    ]
+    ],
+    "launch_in_dev": ["chrome"],
+    "launch_in_ci": ["phantomjs"]
 }
