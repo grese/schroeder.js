@@ -51,7 +51,8 @@
             ext = url.substring(url.lastIndexOf('.') + 1);
             if(Schroeder.CODECS.isSupported(ext)){
                 this.format = ext;
-                return url;
+                this._url = url;
+                break;
             }
         }
     };
