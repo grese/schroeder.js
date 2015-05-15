@@ -18,7 +18,8 @@
          },
          _ctx: AudioContext
      }
-     -----------------------
+     ----------
+     _firstSupportedUrl-------------
      */
     var Instrument = function(options){
         options = options || {};
@@ -27,15 +28,42 @@
         this.name = options.name || null;
         this.urls = options.urls || [];
         this.sprite = options.sprite;
-        this.format = options.format;
         this.gain = (options.gain !== undefined) ? options.gain : 1;
         this._ctx = options.ctx;
-        this._url = this.getUrlForCodec(this.format);
         this._audioData = null;
+
+        if(options.format){
+            this.format = options.format;
+            this._url = this.getUrlForFormat(this.format);
+        }else{
+            this.pickFirstSupportedFormat();
+        }
+
 
         // Create nodes...
         this.createAudioNode();
         this.createGainNode();
+    };
+    Instrument.prototype.pickFirstSupportedFormat = function(){
+        var i, url, ext;
+        for(i=0; i<this.urls.length; i++){
+            url = this.urls[i];
+            ext = url.substring(url.lastIndexOf('.') + 1);
+            if(Schroeder.CODECS.isSupported(ext)){
+                this.format = ext;
+                return url;
+            }
+        }
+    };
+    Instrument.prototype.getUrlForFormat = function(format){
+        var i, ext, url;
+        for(i=0; i<this.urls.length; i++){
+            url = this.urls[i];
+            ext = url.substring(url.lastIndexOf('.') + 1);
+            if(format === ext){
+                return url;
+            }
+        }
     };
     Instrument.prototype.createGainNode = function(){
         if(this._ctx){
@@ -47,16 +75,6 @@
         this._audioNode = new Audio();
         if(this._url){
             this._audioNode.src = this._url;
-        }
-    };
-    Instrument.prototype.getUrlForCodec = function(codec){
-        var ext, url;
-        for(var i=0; i<this.urls.length; i++){
-            url = this.urls[i];
-            ext = url.substring(url.lastIndexOf('.') + 1);
-            if(codec === ext){
-                return url;
-            }
         }
     };
     Instrument.prototype.changeGain = function(value){

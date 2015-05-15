@@ -81,9 +81,19 @@
             expect(instrument._gainNode).to.be.ok;
         });
 
-        it('#getUrlForCodec should return the appropriate URL for a given codec', function(){
+        it('#getUrlForFormat should return the appropriate URL for a given codec', function(){
             var instrument = new Schroeder.Instrument(mockOptions);
-            expect(instrument.getUrlForCodec('m4a')).to.eq(mockOptions.urls[1]);
+            expect(instrument.getUrlForFormat('m4a')).to.eq(mockOptions.urls[1]);
+        });
+
+        it('#pickFirstSupportedFormat should loop through the urls array, and find the first URL that is supported by the browser, ' +
+            'and set the url and format properties accordingly.', function(){
+            var instrument = new Schroeder.Instrument(mockOptions);
+            var stub = sinon.stub(Schroeder.CODECS, 'isSupported').returns(true);
+            instrument.pickFirstSupportedFormat()
+            expect(instrument.format).to.eq('mp3');
+            expect(instrument._url).to.eq('http://something.com/somesound.mp3');
+            stub.restore();
         });
 
         it('#changeGain should update gain property, and the gain.value property on the gainNode.', function(){

@@ -33,11 +33,6 @@
             expect(store._bufferCache).to.be.an.instanceof(Object);
             expect(store._ctx).to.be.an.instanceof(AudioContext);
             expect(store._instruments).to.eql([]);
-            expect(store._format).to.eq('mp3');
-
-
-            store = new Schroeder.AudioStore();
-            expect(store._format).to.eq('auto');
         });
 
         it('#findInstrumentById find an instrument by id from the instruments array, and undefined if no instrument found.', function(){

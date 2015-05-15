@@ -4,7 +4,6 @@
         this._createAudioContext();
         this._bufferCache = new Schroeder.BufferCache();
         this._instruments = [];
-        this._format = options.format || 'auto';
     };
     AudioStore.prototype._createAudioContext = function(){
         var ctx = null;
@@ -34,7 +33,7 @@
             sprite: options.sprite,
             urls: options.urls || [],
             ctx: this._ctx,
-            format: this._format
+            format: options.format
         };
         if(instrOpts.id && !this.findInstrumentById(instrOpts.id)){
             instrument = new Schroeder.Instrument(instrOpts);
