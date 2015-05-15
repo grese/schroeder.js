@@ -17,7 +17,7 @@ Download project, and install the dependencies...
 
 ### Tests
 The project uses [Mocha](http://mochajs.org/) as the testing framework, [Chai](http://chaijs.com/) for assertions, and [Sinon](http://sinonjs.org/) for spies & stubs.  The test runner is testem (which you would have installed during the installation steps).
-* `npm test`
+* `npm start` (npm test is currently used by the Travis CI job)
 * In your browser, visit: `http://localhost:7357/`
 
 ### Dist:

@@ -4,8 +4,8 @@
     "description": "Library for working with WebAudio API",
     "main": "schroeder.js",
     "scripts": {
-        "start": "node build.js",
-        "test": "npm start && testem ci",
+        "start": "node build.js && testem",
+        "test": "node build.js && testem ci",
         "postinstall": "bower install"
     },
     "devDependencies": {
