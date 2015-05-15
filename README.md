@@ -5,6 +5,7 @@ A library built on top of the WebAudio API.
 
 ## Production
 To use the finished product in production, simply add the following script tag in the DOM:
+
 `<script src='dist/schroeder.js'></script>`
 
 ## Development:
