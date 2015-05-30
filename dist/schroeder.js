@@ -195,7 +195,11 @@
                 source.noteOn(0, spriteItem.start, duration);
             }
             setTimeout(function(){
-                source.stop();
+                if(source.stop){
+                    source.stop(0);
+                }else{
+                    source.noteOff(0);
+                }
             }, duration * 1000); // sec to ms.
         }else{
             console.error('Could not find sound for ' + this._url + '. Is it loaded?');
