@@ -20,14 +20,10 @@
             console.error.restore();
         });
 
-        it('should exist, and be an object', function(){
-            expect(Schroeder.AudioStore).to.be.an.instanceof(Object);
-        });
-
         it('should initialize, create an AudioContext and BufferCache on initialization, assign default properties, ' +
             'and assign options passed in through constructor.', function(){
             var store;
-            store = new Schroeder.AudioStore({
+            store = Schroeder.AudioStore.create({
                 format: 'mp3'
             });
             expect(store._bufferCache).to.be.an.instanceof(Object);
@@ -37,14 +33,14 @@
 
         it('#findInstrumentById find an instrument by id from the instruments array, and undefined if no instrument found.', function(){
             var store;
-            store = new Schroeder.AudioStore();
+            store = Schroeder.AudioStore.create();
             store._instruments = mockInstruments;
             expect(store.findInstrumentById('piano1')).to.eq(mockInstruments[0]);
             expect(store.findInstrumentById('xylophone')).to.be.undefined;
         });
 
         it('#createInstrument should just log an error and execute the error callback if no ID is provided', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var cbSpy = sinon.spy();
             var errCbSpy = sinon.spy();
             store.createInstrument({}, cbSpy, errCbSpy);
@@ -54,7 +50,7 @@
         });
 
         it('#createInstrument should just log an error and execute the error callback if an instrument already exists with the id provided.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var cbSpy = sinon.spy();
             var errCbSpy = sinon.spy();
             sinon.stub(store, 'findInstrumentById').returns(true);
@@ -66,7 +62,7 @@
         });
 
         it('#createInstrument should add a new Schroeder.Instrument with provided options, load the instrument, add it to the instruments array.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var spy = sinon.stub(store, '_loadInstrument');
 
             store.createInstrument({ id: 'piano1' });
@@ -77,7 +73,7 @@
         });
 
         it('#removeInstrument should remove a given instrument by id, and remove the cached decoded data from bufferCache', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var id = mockInstruments[2].id,
                 url = mockInstruments[2]._url;
             store._instruments = mockInstruments;
@@ -89,7 +85,7 @@
 
         it('#_loadInstrument should just set the decoded audioData on the instrument if the url already exists in bufferCache, ' +
             'and should fire callback.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var mockInstrument = mockInstruments[0];
             mockInstrument.setAudioData = sinon.spy();
             var callbackSpy = sinon.spy();
@@ -102,7 +98,7 @@
 
         it('#_loadInstrument should make a GET request to load the raw audio file, ' +
             'and decode the raw audio data when the call succeeds.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var mockInstrument = mockInstruments[0],
                 callbackSpy = sinon.spy(),
                 errCallbackSpy = sinon.spy(),
@@ -120,7 +116,7 @@
 
         it('#_loadInstrument should make a GET request to load the raw audio file, ' +
             'and execute the error callback, and log an error if the call fails.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var mockInstrument = mockInstruments[0],
                 callbackSpy = sinon.spy(),
                 errCallbackSpy = sinon.spy();
@@ -137,7 +133,7 @@
 
         it('#_decodeInstrument should decode the new audioData, update the decoded ' +
             'data on the instrument, and in the cache, and fire callback if decoding succeeds.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var mockInstrument = mockInstruments[0];
             mockInstrument.setAudioData = sinon.spy();
             var decodedAudioData = 'xyz1jecwlrazjkleru49;akdjv4poqxculdafj';
@@ -153,7 +149,7 @@
         });
 
         it('#_decodeInstrument should log an error, and fire the error callback if decoding fails.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var mockInstrument = mockInstruments[0];
             var stub = sinon.stub(store._ctx, 'decodeAudioData', function(data, cb, errCb){
                 errCb();
@@ -167,7 +163,7 @@
 
         it('#unlock should unlock the audio context by creating an empty buffer/bufferSource, connecting it to the destination, ' +
             'and playing the empty sound.', function(){
-            var store = new Schroeder.AudioStore();
+            var store = Schroeder.AudioStore.create();
             var mockBufferSource = {
                 buffer: null,
                 connect: function(){},
